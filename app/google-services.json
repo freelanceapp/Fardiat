@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "932580699959",
+    "project_id": "fardiat-8bc02",
+    "storage_bucket": "fardiat-8bc02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932580699959:android:6651672c7e44a0060534b2",
+        "android_client_info": {
+          "package_name": "com.fardiat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "932580699959-71fs8q6csvlbd9rgesuo0los0nsqd3ff.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB03C2V_cDnntaYuhR5wzlEa7DVWPvaOQY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "932580699959-71fs8q6csvlbd9rgesuo0los0nsqd3ff.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
