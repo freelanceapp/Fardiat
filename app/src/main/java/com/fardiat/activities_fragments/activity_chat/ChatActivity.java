@@ -28,10 +28,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.fardiat.R;
+import com.fardiat.activities_fragments.activity_map_search.MapSearchActivity;
 import com.fardiat.adapters.ChatAdapter;
 import com.fardiat.databinding.ActivityChatBinding;
 import com.fardiat.language.Language;
 import com.fardiat.models.ChatUserModel;
+import com.fardiat.models.FavoriteLocationModel;
 import com.fardiat.models.MessageDataModel;
 import com.fardiat.models.MessageModel;
 import com.fardiat.models.UserModel;
@@ -124,6 +126,11 @@ public class ChatActivity extends AppCompatActivity {
             back();
         });
 
+        binding.imageMap.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MapSearchActivity.class);
+            startActivityForResult(intent,100);
+        });
+
 
         binding.imageChooser.setOnClickListener(v -> {
             checkGalleryPermission();
@@ -159,16 +166,13 @@ public class ChatActivity extends AppCompatActivity {
 
             return true;
         });
-
-
         binding.imageSend.setOnClickListener(v -> {
             String message = binding.edtMessage.getText().toString().trim();
             if (!message.isEmpty()) {
                 binding.edtMessage.setText("");
-                sendChatText(message);
+                sendChatText("text",message);
             }
         });
-
         preferences.create_room_id(this, String.valueOf(chatUserModel.getRoom_id()));
         EventBus.getDefault().register(this);
         getAllMessages();
@@ -180,7 +184,7 @@ public class ChatActivity extends AppCompatActivity {
     {
 
         Api.getService(Tags.base_url)
-                .getChatMessages(userModel.getUser().getToken(), chatUserModel.getRoom_id(), 1)
+                .getChatMessages(userModel.getUser().getToken(), chatUserModel.getRoom_id())
                 .enqueue(new Callback<MessageDataModel>() {
                     @Override
                     public void onResponse(Call<MessageDataModel> call, Response<MessageDataModel> response) {
@@ -252,12 +256,12 @@ public class ChatActivity extends AppCompatActivity {
 
 
     }
-    private void sendChatText(String message)
+    private void sendChatText(String type,String message)
     {
         long date = Calendar.getInstance().getTimeInMillis();
 
         Api.getService(Tags.base_url)
-                .sendChatMessage(userModel.getUser().getToken(), chatUserModel.getRoom_id(), userModel.getUser().getId(), chatUserModel.getId(), "text", date, message)
+                .sendChatMessage(userModel.getUser().getToken(), chatUserModel.getRoom_id(), userModel.getUser().getId(), chatUserModel.getId(), type, date, message)
                 .enqueue(new Callback<MessageModel>() {
                     @Override
                     public void onResponse(Call<MessageModel> call, Response<MessageModel> response) {
@@ -398,6 +402,10 @@ public class ChatActivity extends AppCompatActivity {
             Uri uri = getUriFromBitmap(bitmap);
             sendAttachment(uri.toString(), "file");
 
+        }else if (requestCode == 100 && resultCode == RESULT_OK && data != null){
+            FavoriteLocationModel model = (FavoriteLocationModel) data.getSerializableExtra("data");
+            String location =model.getLat()+","+model.getLng();
+            sendChatText("location",location);
         }
 
     }

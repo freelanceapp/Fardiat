@@ -17,6 +17,7 @@ import com.fardiat.tags.Tags;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import okhttp3.MultipartBody;
@@ -70,10 +71,11 @@ public class ServiceUploadAttachment extends Service {
             file_part = Common.getMultiPartImage(this, Uri.parse(file_uri), "file_link");
 
         } else {
-            file_part = Common.getMultiPartAudio(this, file_uri, "voice");
+            file_part = Common.getMultiPartAudio(this, file_uri, "file_link");
 
         }
 
+        Log.e("dd",attachment_type);
         Api.getService(Tags.base_url).sendChatAttachment(user_token, room_id_part, user_id_part, to_user_id_part, type_part, date_part, file_part)
                 .enqueue(new Callback<MessageModel>() {
                     @Override
@@ -85,17 +87,25 @@ public class ServiceUploadAttachment extends Service {
                                 EventBus.getDefault().post(model);
                                 stopSelf();
                             } else {
+                                Log.e("11","11");
                                 Toast.makeText(ServiceUploadAttachment.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                             }
 
 
                         } else {
 
+                            try {
+                                Log.e("error",response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             if (response.code() == 500) {
 
                                 Toast.makeText(ServiceUploadAttachment.this, "Server Error", Toast.LENGTH_SHORT).show();
 
                             } else {
+                                Log.e("22","22");
+
                                 Toast.makeText(ServiceUploadAttachment.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
 

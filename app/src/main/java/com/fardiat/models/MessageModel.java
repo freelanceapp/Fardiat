@@ -11,7 +11,7 @@ public class MessageModel implements Serializable {
     private String message_kind;
     private String message;
     private Object file_link;
-    private int date;
+    private long date;
     private String is_read;
     private String created_at;
     private String updated_at;
@@ -52,7 +52,7 @@ public class MessageModel implements Serializable {
         return file_link;
     }
 
-    public int getDate() {
+    public long getDate() {
         return date;
     }
 

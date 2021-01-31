@@ -121,12 +121,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
         sliderAdapter = new SliderAdapter(productImageModelList, this);
         binding.pager.setAdapter(sliderAdapter);
 
-        binding.checkFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                like_dislike();
-            }
-        });
+        binding.checkFavorite.setOnClickListener(view -> like_dislike());
 
         binding.iconCopy.setOnClickListener(view -> {
 
@@ -142,7 +137,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
             startActivity(intent);
         });
 
-        binding.cons.setOnClickListener(view -> {
+        binding.image.setOnClickListener(view -> {
             Intent intent = new Intent(this, ProfileProductsActivity.class);
             intent.putExtra("data",productModel.getUser());
             startActivity(intent);
@@ -156,7 +151,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
             startActivity(i);
         });
         binding.imgWarning.setOnClickListener(view -> addReport());
-        binding.flCall.setOnClickListener(view -> createChat());
+        binding.llChat.setOnClickListener(view -> createChat());
         getProductById();
     }
 
@@ -220,6 +215,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
         } catch (Exception e) {
 
         }
+
+
     }
 
     private void navigateToChatActivity(RoomIdModel roomIdModel) {

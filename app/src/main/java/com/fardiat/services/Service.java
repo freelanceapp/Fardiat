@@ -346,8 +346,7 @@ public interface Service {
     @FormUrlEncoded
     @POST("api/single-chat-room")
     Call<MessageDataModel> getChatMessages(@Header("Authorization") String token,
-                                           @Field("user_id") int user_id,
-                                           @Field("page") int page
+                                           @Field("room_id") int user_id
 
 
     );
@@ -383,7 +382,7 @@ public interface Service {
                                  @Field("to_user_id") int to_user_id
     );
 
-    @GET("api/product")
+    @GET("api/get-user-profile-products")
     Call<ProductDataModel> getProductByUserId(@Query("my_user_id") int my_user_id,
                                               @Query("other_user_id") int product_id
 

@@ -96,7 +96,7 @@
                 android:background="@color/white"
                 android:fillViewport="true"
                 android:fitsSystemWindows="true"
-                android:visibility="gone"
+                android:visibility="visible"
 
                 >
 
@@ -412,7 +412,6 @@
                             android:orientation="vertical">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/cons"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical"

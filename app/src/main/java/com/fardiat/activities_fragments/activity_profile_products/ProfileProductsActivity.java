@@ -129,7 +129,7 @@ public class ProfileProductsActivity extends AppCompatActivity {
 
                             if (productModelList.size() > 0) {
 
-                                // adapter.notifyDataSetChanged();
+                                 adapter.notifyDataSetChanged();
 
                                 binding.tvNoData.setVisibility(View.GONE);
                             } else {
