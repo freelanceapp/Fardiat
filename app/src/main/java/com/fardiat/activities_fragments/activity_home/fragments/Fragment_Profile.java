@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.fardiat.R;
 import com.fardiat.activities_fragments.activity_edit_profile.EditProfileActivity;
 import com.fardiat.activities_fragments.activity_home.HomeActivity;
-import com.fardiat.activity_my_ads.MyAdsActivity;
+import com.fardiat.activities_fragments.activity_my_ads.MyAdsActivity;
 import com.fardiat.databinding.FragmentProfileBinding;
 import com.fardiat.models.UserModel;
 import com.fardiat.preferences.Preferences;

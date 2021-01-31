@@ -6,6 +6,8 @@ import com.fardiat.models.BankDataModel;
 import com.fardiat.models.FavoriteDataModel;
 import com.fardiat.models.ItemAddAdsDataModel;
 import com.fardiat.models.MainCategoryDataModel;
+import com.fardiat.models.MessageDataModel;
+import com.fardiat.models.MessageModel;
 import com.fardiat.models.NotificationCount;
 import com.fardiat.models.NotificationDataModel;
 import com.fardiat.models.OrderDataModel;
@@ -14,6 +16,8 @@ import com.fardiat.models.PlaceGeocodeData;
 import com.fardiat.models.PlaceMapDetailsData;
 import com.fardiat.models.ProductDataModel;
 import com.fardiat.models.ProductModel;
+import com.fardiat.models.RoomIdModel;
+import com.fardiat.models.RoomModel;
 import com.fardiat.models.SettingModel;
 import com.fardiat.models.Slider_Model;
 import com.fardiat.models.UserModel;
@@ -155,18 +159,20 @@ public interface Service {
 
     @FormUrlEncoded
     @POST("api/deleteProduct")
-    Call<ResponseBody> deleteAds(@Field("user_id") int  user_id,
-                                      @Field("product_id") int product_id);
+    Call<ResponseBody> deleteAds(@Field("user_id") int user_id,
+                                 @Field("product_id") int product_id);
 
     @FormUrlEncoded
     @POST("api/addReport")
-    Call<ResponseBody> addReport(@Field("user_id") int  user_id,
+    Call<ResponseBody> addReport(@Field("user_id") int user_id,
                                  @Field("product_id") int product_id
     );
+
     @FormUrlEncoded
     @POST("api/favorite-action")
     Call<ResponseBody> favoriteAction(@Header("Authorization") String Authorization,
                                       @Field("product_id") int product_id);
+
     @GET("api/my-favorites")
     Call<FavoriteDataModel> getMyFavoriteProducts(@Header("Authorization") String Authorization);
 
@@ -277,7 +283,7 @@ public interface Service {
                                                @Part("google_long") RequestBody google_long,
                                                @Part MultipartBody.Part vedio,
                                                @Part List<MultipartBody.Part> images,
-                                               @PartMap() Map<String,RequestBody> map
+                                               @PartMap() Map<String, RequestBody> map
     );
 
 
@@ -306,7 +312,7 @@ public interface Service {
                                                   @Part("google_lat") RequestBody google_lat,
                                                   @Part("google_long") RequestBody google_long,
                                                   @Part List<MultipartBody.Part> image,
-                                                  @PartMap() Map<String,RequestBody> map
+                                                  @PartMap() Map<String, RequestBody> map
 
     );
 
@@ -334,8 +340,53 @@ public interface Service {
 
     @FormUrlEncoded
     @POST("api/favorite-action")
-    Call<ResponseBody> addFavoriteProduct(
-            @Header("Authorization") String Authorization,
-            @Field("product_id") String product_id)
-            ;
+    Call<ResponseBody> addFavoriteProduct(@Header("Authorization") String Authorization,
+                                          @Field("product_id") String product_id);
+
+    @FormUrlEncoded
+    @POST("api/single-chat-room")
+    Call<MessageDataModel> getChatMessages(@Header("Authorization") String token,
+                                           @Field("user_id") int user_id,
+                                           @Field("page") int page
+
+
+    );
+
+    @FormUrlEncoded
+    @POST("api/message/send")
+    Call<MessageModel> sendChatMessage(@Header("Authorization") String bearer_token,
+                                       @Field("room_id") int room_id,
+                                       @Field("from_user_id") int from_user_id,
+                                       @Field("to_user_id") int to_user_id,
+                                       @Field("message_kind") String message_kind,
+                                       @Field("date") long date,
+                                       @Field("message") String message
+
+
+    );
+
+    @Multipart
+    @POST("api/message/send")
+    Call<MessageModel> sendChatAttachment(@Header("Authorization") String bearer_token,
+                                          @Part("room_id") RequestBody room_id,
+                                          @Part("from_user_id") RequestBody from_user_id,
+                                          @Part("to_user_id") RequestBody to_user_id,
+                                          @Part("message_kind") RequestBody message_kind,
+                                          @Part("date") RequestBody date,
+                                          @Part MultipartBody.Part attachment
+    );
+
+    @FormUrlEncoded
+    @POST("api/chatRoom/get")
+    Call<RoomIdModel> createRoom(@Header("Authorization") String user_token,
+                                 @Field("from_user_id") int from_user_id,
+                                 @Field("to_user_id") int to_user_id
+    );
+
+    @GET("api/product")
+    Call<ProductDataModel> getProductByUserId(@Query("my_user_id") int my_user_id,
+                                              @Query("other_user_id") int product_id
+
+    );
+
 }

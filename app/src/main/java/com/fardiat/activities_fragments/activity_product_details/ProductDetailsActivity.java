@@ -18,6 +18,10 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.fardiat.activities_fragments.activity_chat.ChatActivity;
+import com.fardiat.activities_fragments.activity_profile_products.ProfileProductsActivity;
+import com.fardiat.models.ChatUserModel;
+import com.fardiat.models.RoomIdModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -91,7 +95,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
         Intent intent = getIntent();
         if (intent != null) {
             product_id = intent.getIntExtra("product_id", 0);
-            Log.e("mmmmmmmm",product_id+"");
 
         }
 
@@ -99,7 +102,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
 
 
     private void initView() {
-
 
 
         productImageModelList = new ArrayList<>();
@@ -110,6 +112,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setBackListener(this);
         binding.setLang(lang);
+        binding.setUserModel(userModel);
         binding.tab.setupWithViewPager(binding.pager);
         binding.recView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ProductDetailsAdapter(productDetailsModelList, this);
@@ -139,6 +142,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
             startActivity(intent);
         });
 
+        binding.cons.setOnClickListener(view -> {
+            Intent intent = new Intent(this, ProfileProductsActivity.class);
+            intent.putExtra("data",productModel.getUser());
+            startActivity(intent);
+        });
+
         binding.iconWhatsApp.setOnClickListener(view -> {
             String phone = productModel.getUser().getPhone_code() + productModel.getUser().getPhone();
             String url = "https://api.whatsapp.com/send?phone=" + phone;
@@ -146,14 +155,80 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
             i.setData(Uri.parse(url));
             startActivity(i);
         });
-        binding.imgWarning.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addReport();
-            }
-        });
+        binding.imgWarning.setOnClickListener(view -> addReport());
+        binding.flCall.setOnClickListener(view -> createChat());
         getProductById();
     }
+
+    private void createChat() {
+        try {
+            ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+            Api.getService(Tags.base_url)
+                    .createRoom(userModel.getUser().getToken(), userModel.getUser().getId(), productModel.getUser().getId())
+                    .enqueue(new Callback<RoomIdModel>() {
+                        @Override
+                        public void onResponse(Call<RoomIdModel> call, Response<RoomIdModel> response) {
+                            dialog.dismiss();
+                            if (response.isSuccessful()) {
+
+                                if (response.body() != null) {
+                                    navigateToChatActivity(response.body());
+                                } else {
+                                    Toast.makeText(ProductDetailsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                }
+
+                            } else {
+                                dialog.dismiss();
+                                if (response.code() == 500) {
+                                    Toast.makeText(ProductDetailsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+
+                                } else {
+                                    Toast.makeText(ProductDetailsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                    try {
+
+                                        Log.e("error", response.code() + "_" + response.errorBody().string());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<RoomIdModel> call, Throwable t) {
+                            try {
+                                dialog.dismiss();
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(ProductDetailsActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(ProductDetailsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void navigateToChatActivity(RoomIdModel roomIdModel) {
+        ChatUserModel chatUserModel = new ChatUserModel(productModel.getUser().getId(), productModel.getUser().getName(), productModel.getUser().getLogo(), roomIdModel.getRoom_id());
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("data", chatUserModel);
+        startActivity(intent);
+    }
+
 
     private void getProductById() {
 
@@ -173,11 +248,11 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
                             binding.progBar.setVisibility(View.GONE);
                             if (response.isSuccessful() && response.body() != null) {
                                 productModel = response.body();
-                                if (productModel!=null){
-                                    if (productModel.getBlock_check().equals("yes")){
-                                        binding.imgWarning.setColorFilter(ContextCompat.getColor(ProductDetailsActivity.this,R.color.colorPrimary));
-                                    }else {
-                                        binding.imgWarning.setColorFilter(ContextCompat.getColor(ProductDetailsActivity.this,R.color.gray4));
+                                if (productModel != null) {
+                                    if (productModel.getBlock_check().equals("yes")) {
+                                        binding.imgWarning.setColorFilter(ContextCompat.getColor(ProductDetailsActivity.this, R.color.colorPrimary));
+                                    } else {
+                                        binding.imgWarning.setColorFilter(ContextCompat.getColor(ProductDetailsActivity.this, R.color.gray4));
 
                                     }
                                 }
@@ -189,7 +264,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
 
                                     adapter.notifyDataSetChanged();
                                 }
-                                if (productModel.getUser_like()!=null){
+                                if (productModel.getUser_like() != null) {
                                     binding.checkFavorite.setChecked(true);
 
                                 }
@@ -197,13 +272,13 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
                                 if (productModel.getVedio() != null) {
                                     productImageModelList.add(new ProductImageModel(0, productModel.getVedio(), "video"));
                                 }*/
-                                if (productModel.getProducts_images()!=null&&productModel.getProducts_images().size()>0){
+                                if (productModel.getProducts_images() != null && productModel.getProducts_images().size() > 0) {
                                     binding.flNoSlider.setVisibility(View.GONE);
                                     binding.flSlider.setVisibility(View.VISIBLE);
                                     productImageModelList.addAll(productModel.getProducts_images());
 
                                     sliderAdapter.notifyDataSetChanged();
-                                }else {
+                                } else {
                                     binding.flNoSlider.setVisibility(View.VISIBLE);
                                     binding.flSlider.setVisibility(View.GONE);
                                 }
@@ -213,7 +288,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
                                     }
                                 } catch (Exception e) {
 
-                                    if (productModel.getUser_like()!=null){
+                                    if (productModel.getUser_like() != null) {
                                         binding.checkFavorite.setChecked(true);
 
                                     }
@@ -221,13 +296,13 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
                                     if (productModel.getVedio() != null) {
                                         productImageModelList.add(new ProductImageModel(0, productModel.getVedio(), "video"));
                                     }
-                                    if (productModel.getProducts_images()!=null&&productModel.getProducts_images().size()>0){
+                                    if (productModel.getProducts_images() != null && productModel.getProducts_images().size() > 0) {
                                         binding.flNoSlider.setVisibility(View.GONE);
                                         binding.flSlider.setVisibility(View.VISIBLE);
                                         productImageModelList.addAll(productModel.getProducts_images());
 
                                         sliderAdapter.notifyDataSetChanged();
-                                    }else {
+                                    } else {
                                         binding.flNoSlider.setVisibility(View.VISIBLE);
                                         binding.flSlider.setVisibility(View.GONE);
                                     }
@@ -279,8 +354,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
         }
     }
 
+    // عليا النعمة انا مشتغلت عليها (عماد مجدي)
     public int like_dislike() {
-        Log.e("sssssssss",product_id+"");
 
         if (userModel != null) {
             try {
@@ -340,15 +415,16 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
 
         }
     }
+
     public int addReport() {
         if (userModel != null) {
             try {
-                ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+                ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.setCancelable(false);
                 dialog.show();
                 Api.getService(Tags.base_url)
-                        .addReport(userModel.getUser().getId(), productModel.getId() )
+                        .addReport(userModel.getUser().getId(), productModel.getId())
                         .enqueue(new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

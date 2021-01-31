@@ -218,6 +218,28 @@ public class Common {
                 .getAuthority());
     }
 
+    public static MultipartBody.Part getMultiPartImage(Context context, Uri uri, String partName) {
+        File file = getFileFromImagePath(getImagePath(context, uri));
+        String name = System.currentTimeMillis()+file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
+        RequestBody requestBody = getRequestBodyImage(file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData(partName, name, requestBody);
+        return part;
+
+    }
+
+    public static MultipartBody.Part getMultiPartAudio(Context context, String audio_path, String partName) {
+        File file = new File(audio_path);
+        String name = System.currentTimeMillis()+file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
+        RequestBody requestBody = getRequestBodyAudio(file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData(partName, name, requestBody);
+        return part;
+
+    }
+
+    private static RequestBody getRequestBodyAudio(File file) {
+        RequestBody requestBody = RequestBody.create(MediaType.parse("audio/*"), file);
+        return requestBody;
+    }
     private static File getFileFromImagePath(String path) {
         File file = new File(path);
         return file;

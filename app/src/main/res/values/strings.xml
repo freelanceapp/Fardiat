@@ -236,5 +236,7 @@
     <string name="choose_maximum2_image">Choose maximum 2 ad images</string>
     <string name="copied">Copied</string>
     <string name="rep">تم عمل بلاغ بنجاح</string>
+    <string name="type_a_message">Type a message...</string>
+    <string name="chat">Chat</string>
 
 </resources>

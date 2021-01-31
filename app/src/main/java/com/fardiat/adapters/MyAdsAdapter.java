@@ -8,11 +8,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fardiat.R;
-import com.fardiat.activity_my_ads.MyAdsActivity;
+import com.fardiat.activities_fragments.activity_my_ads.MyAdsActivity;
 import com.fardiat.databinding.MyAdsRowBinding;
-import com.fardiat.databinding.ProductFavoriteRowBinding;
 import com.fardiat.models.ProductModel;
-
 import java.util.List;
 
 public class MyAdsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

@@ -8,6 +8,9 @@
         <variable
             name="backListener"
             type="com.fardiat.interfaces.Listeners.BackListener" />
+        <variable
+            name="userModel"
+            type="com.fardiat.models.UserModel" />
 
 
         <variable
@@ -408,20 +411,25 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                            <LinearLayout
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/cons"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
                                 <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/image"
                                     user_image="@{model.user.logo}"
                                     android:layout_width="36dp"
                                     android:layout_height="36dp"
                                     android:layout_gravity="center_vertical"
-                                    android:src="@drawable/image_avatar"
+                                    android:src="@drawable/ic_avatar"
                                     app:civ_border_color="@color/white"
-                                    app:civ_border_width="1dp" />
+                                    app:civ_border_width="1dp"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -431,8 +439,49 @@
                                     android:layout_marginEnd="10dp"
                                     android:text="@{model.user.name}"
                                     android:textColor="@color/black"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
+                                    android:textSize="13sp"
+                                    android:singleLine="true"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/image"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@id/llChat"
+                                    app:layout_constraintHorizontal_bias="0"
+                                    app:layout_constraintWidth_default="wrap"
+                                    />
+                                <LinearLayout
+                                    android:id="@+id/llChat"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    android:orientation="horizontal"
+                                    android:background="@drawable/rounded_primary"
+                                    android:paddingStart="8dp"
+                                    android:paddingEnd="8dp"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:visibility="@{userModel==null?View.INVISIBLE:(userModel.user.id==model.user.id?View.INVISIBLE:View.VISIBLE),default=invisible}"
+
+                                    >
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:src="@drawable/ic_chat"
+                                        app:tint="@color/white"
+                                        android:padding="3dp"
+                                        />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/white"
+                                        android:textSize="15sp"
+                                        android:text="@string/chat"
+                                        android:paddingStart="5dp"
+                                        android:paddingEnd="5dp"
+                                        />
+                                </LinearLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"

@@ -240,6 +240,8 @@
     <string name="choose_maximum2_image">اختر حد ادني 2 صورة للإعلان</string>
     <string name="copied">تم النسخ</string>
     <string name="rep">تم عمل بلاغ بنجاح</string>
+    <string name="type_a_message">إكتب رسالة...</string>
+    <string name="chat">محادثة</string>
 
 
 </resources>

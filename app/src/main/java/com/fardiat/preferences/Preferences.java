@@ -87,6 +87,22 @@ public class Preferences {
     }
 
 
+    public void create_room_id(Context context, String room_id) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("room", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("room_id", room_id);
+        editor.apply();
+
+
+    }
+
+    public String getRoomId(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("room", Context.MODE_PRIVATE);
+        String room_id = preferences.getString("room_id", Tags.session_logout);
+        return room_id;
+    }
+
     public void create_update_userData(Context context, UserModel userModel) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         Gson gson = new Gson();

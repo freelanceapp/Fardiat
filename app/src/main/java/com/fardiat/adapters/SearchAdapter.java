@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fardiat.R;
-import com.fardiat.databinding.LoadmoreRowBinding;
+import com.fardiat.databinding.LoadMoreRowBinding;
 import com.fardiat.databinding.OfferRowBinding;
 import com.fardiat.databinding.ProductRowBinding;
 import com.fardiat.models.ProductModel;
@@ -45,7 +45,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ProductRowBinding binding = DataBindingUtil.inflate(inflater, R.layout.product_row, parent, false);
             return new MyHolder(binding);
         }else {
-            LoadmoreRowBinding binding = DataBindingUtil.inflate(inflater, R.layout.loadmore_row, parent, false);
+            LoadMoreRowBinding binding = DataBindingUtil.inflate(inflater, R.layout.load_more_row, parent, false);
             return new LoadMoreHolder(binding);
         }
 
@@ -92,9 +92,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     public class LoadMoreHolder extends RecyclerView.ViewHolder {
-        public LoadmoreRowBinding binding;
+        public LoadMoreRowBinding binding;
 
-        public LoadMoreHolder(@NonNull LoadmoreRowBinding binding) {
+        public LoadMoreHolder(@NonNull LoadMoreRowBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 

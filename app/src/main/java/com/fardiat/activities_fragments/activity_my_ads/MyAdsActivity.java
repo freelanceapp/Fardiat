@@ -1,4 +1,4 @@
-package com.fardiat.activity_my_ads;
+package com.fardiat.activities_fragments.activity_my_ads;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,9 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.fardiat.R;
 import com.fardiat.activities_fragments.activity_product_details.ProductDetailsActivity;
 import com.fardiat.adapters.MyAdsAdapter;
-import com.fardiat.databinding.ActivityClientProfileBinding;
 import com.fardiat.databinding.ActivityMyAdsBinding;
-import com.fardiat.databinding.FragmentFavoriteBinding;
 import com.fardiat.interfaces.Listeners;
 import com.fardiat.language.Language;
 import com.fardiat.models.ProductDataModel;

@@ -12,28 +12,37 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.fardiat.share.App"
+        android:name=".share.App"
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
-        android:requestLegacyExternalStorage="true"
-        android:hardwareAccelerated="false"
         tools:targetApi="m">
-        <activity android:name="com.fardiat.activities_fragments.activity_add_ads.AddAdsActivity"
+        <activity android:name=".activities_fragments.activity_profile_products.ProfileProductsActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             />
-        <activity android:name="com.fardiat.activity_my_ads.MyAdsActivity"
+        <activity
+            android:name=".activities_fragments.activity_chat.ChatActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
-            />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+        <activity
+            android:name=".activities_fragments.activity_add_ads.AddAdsActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+        <activity
+            android:name=".activities_fragments.activity_my_ads.MyAdsActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
         <service
-            android:name="com.fardiat.notifications.FireBaseMessaging"
+            android:name=".notifications.FireBaseMessaging"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -45,59 +54,58 @@
             android:required="false" />
 
         <activity
-            android:name="com.fardiat.activities_fragments.activity_language.LanguageActivity"
-            android:configChanges="keyboardHidden|screenSize|orientation"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity
-            android:name="com.fardiat.activities_fragments.activity_edit_profile.EditProfileActivity"
+            android:name=".activities_fragments.activity_language.LanguageActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.fardiat.activities_fragments.activity_login.LoginActivity"
+            android:name=".activities_fragments.activity_edit_profile.EditProfileActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.fardiat.activities_fragments.activity_verification_code.VerificationCodeActivity"
+            android:name=".activities_fragments.activity_login.LoginActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".activities_fragments.activity_verification_code.VerificationCodeActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
-            android:name="com.fardiat.activities_fragments.activity_product_details.ProductDetailsActivity"
+            android:name=".activities_fragments.activity_product_details.ProductDetailsActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.fardiat.activities_fragments.activity_client_profile.ClientProfileActivity"
+            android:name=".activities_fragments.activity_client_profile.ClientProfileActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.fardiat.activities_fragments.bank_activity.BanksActivity"
+            android:name=".activities_fragments.bank_activity.BanksActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.fardiat.activities_fragments.activity_signup.SignUpActivity"
+            android:name=".activities_fragments.activity_signup.SignUpActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
-            android:name="com.fardiat.activities_fragments.activity_about_app.AboutAppActivity"
+            android:name=".activities_fragments.activity_about_app.AboutAppActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.fardiat.activities_fragments.activity_home.HomeActivity"
+            android:name=".activities_fragments.activity_home.HomeActivity"
             android:configChanges="keyboardHidden|screenSize|orientation" />
         <activity
-            android:name="com.fardiat.activities_fragments.activity_search.SearchActivity"
+            android:name=".activities_fragments.activity_search.SearchActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.fardiat.activities_fragments.activity_notification.NotificationActivity"
+            android:name=".activities_fragments.activity_notification.NotificationActivity"
             android:configChanges="keyboardHidden|screenSize|orientation" />
         <activity
-            android:name="com.fardiat.activities_fragments.telr_activity.TelrActivity"
+            android:name=".activities_fragments.telr_activity.TelrActivity"
             android:configChanges="keyboardHidden|screenSize|orientation" />
         <activity
-            android:name="com.fardiat.activities_fragments.activity_images.ImagesActivity"
+            android:name=".activities_fragments.activity_images.ImagesActivity"
             android:configChanges="keyboardHidden|screenSize|orientation" />
-        <activity android:name="com.fardiat.activities_fragments.activity_splash.SplashActivity">
+        <activity android:name=".activities_fragments.activity_splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -111,6 +119,8 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <service android:name=".activities_fragments.activity_chat.ServiceUploadAttachment" />
     </application>
 
 </manifest>
