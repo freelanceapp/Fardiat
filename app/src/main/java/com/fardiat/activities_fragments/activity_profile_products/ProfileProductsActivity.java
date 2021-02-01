@@ -86,6 +86,15 @@ public class ProfileProductsActivity extends AppCompatActivity {
         binding.recView.setLayoutManager(new LinearLayoutManager(this));
         binding.recView.setAdapter(adapter);
 
+        String last4Number = user.getPhone().substring(user.getPhone().length()-4);
+        String stars ="";
+        for (int index=0;index<user.getPhone().length()-4;index++){
+            stars +="*";
+        }
+
+        String phone2 = stars+last4Number;
+        binding.tvPhone.setText(phone2);
+
         binding.llBack.setOnClickListener(view -> finish());
         binding.iconCopy.setOnClickListener(view -> {
             String phone = user.getPhone_code() + user.getPhone();
@@ -115,8 +124,12 @@ public class ProfileProductsActivity extends AppCompatActivity {
 
     private void getUserData()
     {
+        String user_id ="";
+        if (userModel!=null){
+            user_id = String.valueOf(userModel.getUser().getId());
+        }
         Api.getService(Tags.base_url)
-                .getProductByUserId(userModel.getUser().getId(), user.getId())
+                .getProductByUserId(user_id, user.getId())
                 .enqueue(new Callback<ProductDataModel>() {
                     @Override
                     public void onResponse(Call<ProductDataModel> call, Response<ProductDataModel> response) {

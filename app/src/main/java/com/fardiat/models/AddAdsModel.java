@@ -26,6 +26,7 @@ public class AddAdsModel extends BaseObservable implements Serializable {
     private String video_url;
     private List<String> imagesList;
     private List<ItemAddAds> itemAddAdsList;
+    private boolean swear = false;
 
 
     public ObservableField<String> error_name = new ObservableField<>();
@@ -42,7 +43,9 @@ public class AddAdsModel extends BaseObservable implements Serializable {
                 !price.isEmpty() &&
                 !details.isEmpty() &&
                 !address.isEmpty() &&
-                imagesList.size() == 2) {
+                imagesList.size() == 1&&
+                swear
+        ) {
 
             error_name.set(null);
             error_price.set(null);
@@ -99,13 +102,17 @@ public class AddAdsModel extends BaseObservable implements Serializable {
 
             }
 
-            if (imagesList.size()!=2){
+            if (imagesList.size()!=1){
                 Toast.makeText(context, R.string.choose_maximum2_image, Toast.LENGTH_SHORT).show();
             }
 
             if (department_id==0){
                 Toast.makeText(context, R.string.choose_category, Toast.LENGTH_SHORT).show();
 
+            }
+
+            if (!swear){
+                Toast.makeText(context, R.string.accept_swear, Toast.LENGTH_SHORT).show();
             }
             if (hasExtraItems&&itemAddAdsList.size()>0){
                 if (isDataItemValid(context)){
@@ -229,6 +236,14 @@ public class AddAdsModel extends BaseObservable implements Serializable {
 
     public void setItemAddAdsList(List<ItemAddAds> itemAddAdsList) {
         this.itemAddAdsList = itemAddAdsList;
+    }
+
+    public boolean isSwear() {
+        return swear;
+    }
+
+    public void setSwear(boolean swear) {
+        this.swear = swear;
     }
 
     public boolean isDataItemValid(Context context){

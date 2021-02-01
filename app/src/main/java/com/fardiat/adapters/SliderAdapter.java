@@ -97,7 +97,9 @@ public class SliderAdapter extends PagerAdapter {
             player = ExoPlayerFactory.newSimpleInstance(context);
             playerView.setPlayer(player);
             MediaSource mediaSource = buildMediaSource(uri);
-
+            if (currentPosition==0&&currentWindow==0){
+                player.seekTo(1000);
+            }
             player.seekTo(currentWindow, currentPosition);
             player.setPlayWhenReady(playWhenReady);
             player.prepare(mediaSource);

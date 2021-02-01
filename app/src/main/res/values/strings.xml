@@ -228,15 +228,21 @@
     <string name="upload_video">Upload Video</string>
     <string name="ad_price">Ad Price</string>
     <string name="ad_details">Ad details</string>
-    <string name="max_ad_photo">Maximum 2 ad photos</string>
+    <string name="max_ad_photo">Maximum 1 ad photos</string>
     <string name="choose_category">Choose category</string>
     <string name="vid_pem_denied">Video Permission Denied</string>
     <string name="length_video_shouldnot_exceed">Length of video shouldn\'t exceed 59 seconds</string>
     <string name="ad_name">Ad Name</string>
-    <string name="choose_maximum2_image">Choose maximum 2 ad images</string>
+    <string name="choose_maximum2_image">Choose maximum 1 ad images</string>
     <string name="copied">Copied</string>
-    <string name="rep">تم عمل بلاغ بنجاح</string>
+    <string name="rep">report success</string>
     <string name="type_a_message">Type a message...</string>
     <string name="chat">Chat</string>
+    <string name="delete_video">Delete video</string>
+    <string name="comments">Comments:-</string>
+    <string name="no_comments">No comments</string>
+    <string name="type_a_comment">Type a comment...</string>
+    <string name="accept_swear">Accept terms and condition</string>
+    <string name="accept">Accept</string>
 
 </resources>

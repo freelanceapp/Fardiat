@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -20,8 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.fardiat.activities_fragments.activity_chat.ChatActivity;
 import com.fardiat.activities_fragments.activity_profile_products.ProfileProductsActivity;
+import com.fardiat.adapters.CommentAdapter;
 import com.fardiat.models.ChatUserModel;
+import com.fardiat.models.CommentDatModel;
+import com.fardiat.models.CommentsModel;
 import com.fardiat.models.RoomIdModel;
+import com.fardiat.models.SingleComment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -73,6 +78,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
     private List<ProductDetailsModel> productDetailsModelList;
     private SliderAdapter sliderAdapter;
     private List<ProductImageModel> productImageModelList;
+    private List<CommentsModel> commentsModelList;
+    private CommentAdapter commentAdapter;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -85,7 +92,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product_details);
         getDataFromIntent();
-
         initView();
 
     }
@@ -95,7 +101,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
         Intent intent = getIntent();
         if (intent != null) {
             product_id = intent.getIntExtra("product_id", 0);
-
+            if (product_id==0){
+                product_id = Integer.parseInt(intent.getData().getLastPathSegment());
+            }
         }
 
     }
@@ -103,13 +111,13 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
 
     private void initView() {
 
-
+        commentsModelList = new ArrayList<>();
         productImageModelList = new ArrayList<>();
         productDetailsModelList = new ArrayList<>();
         Paper.init(this);
         preferences = Preferences.getInstance();
         userModel = preferences.getUserData(this);
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
         binding.setBackListener(this);
         binding.setLang(lang);
         binding.setUserModel(userModel);
@@ -117,6 +125,11 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
         binding.recView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ProductDetailsAdapter(productDetailsModelList, this);
         binding.recView.setAdapter(adapter);
+
+        commentAdapter = new CommentAdapter(commentsModelList, this);
+        binding.recViewComments.setLayoutManager(new LinearLayoutManager(this));
+        binding.recViewComments.setAdapter(commentAdapter);
+
 
         sliderAdapter = new SliderAdapter(productImageModelList, this);
         binding.pager.setAdapter(sliderAdapter);
@@ -139,7 +152,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
 
         binding.image.setOnClickListener(view -> {
             Intent intent = new Intent(this, ProfileProductsActivity.class);
-            intent.putExtra("data",productModel.getUser());
+            intent.putExtra("data", productModel.getUser());
             startActivity(intent);
         });
 
@@ -150,6 +163,24 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
             i.setData(Uri.parse(url));
             startActivity(i);
         });
+
+
+        binding.imageShare.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            String data = getString(R.string.app_name) + "\n" + productModel.getTitle() + "\n" + Tags.base_url + "api/product_share/" + productModel.getId();
+            intent.putExtra(Intent.EXTRA_TEXT,data);
+            startActivity(intent);
+        });
+
+        binding.imageSend.setOnClickListener(v -> {
+            String comment = binding.edtComment.getText().toString();
+            if (!comment.isEmpty()) {
+                binding.edtComment.setText(null);
+                sendComments(comment);
+            }
+        });
+
         binding.imgWarning.setOnClickListener(view -> addReport());
         binding.llChat.setOnClickListener(view -> createChat());
         getProductById();
@@ -246,6 +277,23 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
                             if (response.isSuccessful() && response.body() != null) {
                                 productModel = response.body();
                                 if (productModel != null) {
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            binding.scrollView.scrollTo(0, 0);
+
+                                        }
+                                    }, 200);
+                                    getComments();
+                                    String last4Number = productModel.getUser().getPhone().substring(productModel.getUser().getPhone().length() - 4);
+                                    String stars = "";
+                                    for (int index = 0; index < productModel.getUser().getPhone().length() - 4; index++) {
+                                        stars += "*";
+                                    }
+
+                                    String phone = stars + last4Number;
+                                    binding.tvPhone.setText(phone);
+
                                     if (productModel.getBlock_check().equals("yes")) {
                                         binding.imgWarning.setColorFilter(ContextCompat.getColor(ProductDetailsActivity.this, R.color.colorPrimary));
                                     } else {
@@ -332,6 +380,129 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
                         public void onFailure(Call<ProductModel> call, Throwable t) {
                             try {
                                 binding.progBar.setVisibility(View.GONE);
+
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(ProductDetailsActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(ProductDetailsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void getComments() {
+        try {
+
+            Api.getService(Tags.base_url)
+                    .getComments(productModel.getId())
+                    .enqueue(new Callback<CommentDatModel>() {
+                        @Override
+                        public void onResponse(Call<CommentDatModel> call, Response<CommentDatModel> response) {
+                            binding.progBarComments.setVisibility(View.GONE);
+                            if (response.isSuccessful() && response.body() != null) {
+                                commentsModelList.clear();
+                                if (response.body().getData() != null && response.body().getData().size() > 0) {
+                                    commentsModelList.addAll(response.body().getData());
+                                    commentAdapter.notifyDataSetChanged();
+                                    binding.tvNoComments.setVisibility(View.GONE);
+
+                                } else {
+                                    binding.tvNoComments.setVisibility(View.VISIBLE);
+                                }
+                            } else {
+                                binding.progBarComments.setVisibility(View.GONE);
+
+                                if (response.code() == 500) {
+                                    Toast.makeText(ProductDetailsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+
+                                } else {
+                                    Toast.makeText(ProductDetailsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                    try {
+
+                                        Log.e("error", response.code() + "_" + response.errorBody().string());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<CommentDatModel> call, Throwable t) {
+                            try {
+                                binding.progBarComments.setVisibility(View.GONE);
+
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(ProductDetailsActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(ProductDetailsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void sendComments(String comment) {
+        try {
+            if (userModel == null) {
+
+                return;
+            }
+
+            Api.getService(Tags.base_url)
+                    .sendComments(userModel.getUser().getToken(), productModel.getId(), userModel.getUser().getId(), comment)
+                    .enqueue(new Callback<SingleComment>() {
+                        @Override
+                        public void onResponse(Call<SingleComment> call, Response<SingleComment> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                if (response.body().getData() != null) {
+                                    commentsModelList.add(response.body().getData());
+                                    commentAdapter.notifyItemInserted(commentsModelList.size() - 1);
+                                    binding.recViewComments.postDelayed(() -> binding.recViewComments.smoothScrollToPosition(commentsModelList.size() - 1), 500);
+
+                                }
+                            } else {
+                                try {
+
+                                    Log.e("error", response.code() + "_" + response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if (response.code() == 500) {
+                                    Toast.makeText(ProductDetailsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+
+                                } else {
+                                    Toast.makeText(ProductDetailsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<SingleComment> call, Throwable t) {
+                            try {
 
                                 if (t.getMessage() != null) {
                                     Log.e("error", t.getMessage());

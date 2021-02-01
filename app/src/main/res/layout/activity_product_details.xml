@@ -45,7 +45,7 @@
             >
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -79,6 +79,30 @@
                     android:text="@{model.title}"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text='@{model!=null?"#"+model.id:"",default=""}'
+
+                    />
+                <androidx.legacy.widget.Space
+                    android:layout_width="20dp"
+                    android:layout_height="0dp"/>
+                <ImageView
+                    android:id="@+id/imageShare"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_share2"
+                    app:tint="@color/white"
+                    android:visibility='@{model==null?View.GONE:View.VISIBLE,default=gone}'
+                    />
             </LinearLayout>
 
 
@@ -96,7 +120,7 @@
                 android:background="@color/white"
                 android:fillViewport="true"
                 android:fitsSystemWindows="true"
-                android:visibility="visible"
+                android:visibility="gone"
 
                 >
 
@@ -503,12 +527,12 @@
                                     android:layout_height="0dp" />
 
                                 <TextView
+                                    android:id="@+id/tvPhone"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginStart="10dp"
                                     android:layout_marginEnd="10dp"
-                                    android:text='@{model.user.phone_code+""+model.user.phone}'
                                     android:textColor="@color/black"
                                     android:textSize="13sp" />
 
@@ -594,6 +618,84 @@
                                     android:text="@{model.address}"
                                     android:textColor="@color/black"
                                     android:textSize="13sp" />
+                            </LinearLayout>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:layout_marginTop="20dp"
+                                android:textSize="18sp"
+                                android:text="@string/comments"
+                                android:textStyle="bold"
+                                />
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:minHeight="200dp"
+
+                                >
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recViewComments"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+                                <ProgressBar
+                                    android:id="@+id/progBarComments"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    />
+                                <TextView
+                                    android:id="@+id/tvNoComments"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:text="@string/no_comments"
+                                    android:visibility="gone"
+                                    />
+                            </FrameLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="56dp"
+                                android:orientation="horizontal"
+                                android:background="@drawable/rounded_gray"
+                                android:layout_marginTop="20dp"
+                                android:visibility='@{userModel==null?View.GONE:View.VISIBLE,default=gone}'
+                                >
+                                <androidx.legacy.widget.Space
+                                    android:layout_width="16dp"
+                                    android:layout_height="0dp"/>
+                                <EditText
+                                    android:id="@+id/edtComment"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/transparent"
+                                    android:textSize="15sp"
+                                    android:hint="@string/type_a_comment"
+                                    android:singleLine="true"
+                                    android:textColor="@color/black"
+                                    />
+                                <ImageView
+                                    android:id="@+id/imageSend"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_send"
+                                    app:tint="@color/colorPrimary"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:rotation='@{lang.equals("ar")?180:0}'
+                                    />
+                                <androidx.legacy.widget.Space
+                                    android:layout_width="8dp"
+                                    android:layout_height="0dp"/>
                             </LinearLayout>
 
 

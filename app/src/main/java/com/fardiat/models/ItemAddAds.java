@@ -2,6 +2,7 @@ package com.fardiat.models;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+
 import com.fardiat.BR;
 
 import java.io.Serializable;
@@ -37,6 +38,5 @@ public class ItemAddAds extends BaseObservable implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
-        notifyPropertyChanged(BR.content);
     }
 }

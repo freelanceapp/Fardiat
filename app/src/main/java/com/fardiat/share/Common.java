@@ -64,11 +64,11 @@ public class Common {
                                                  public void onClick(View v) {
 
                                                      dialog.dismiss();
-                                                     if (msg.equals(context.getResources().getString(R.string.please_sign_in_or_sign_up))) {
+                                                    /* if (msg.equals(context.getResources().getString(R.string.please_sign_in_or_sign_up))) {
                                                          Intent intent = new Intent(context, LoginActivity.class);
                                                          context.startActivity(intent);
                                                          ((AppCompatActivity) context).finish();
-                                                     }
+                                                     }*/
                                                  }
                                              }
 

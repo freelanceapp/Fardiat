@@ -27,10 +27,17 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
+
+        <activity android:name=".activities_fragments.activite_swear.SwearActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            />
+
         <activity android:name=".activities_fragments.activity_map_search.MapSearchActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             />
+
         <activity android:name=".activities_fragments.activity_profile_products.ProfileProductsActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
@@ -79,7 +86,19 @@
         <activity
             android:name=".activities_fragments.activity_product_details.ProductDetailsActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="fardeeat.com"
+                    android:pathPrefix="/api/product_share/"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities_fragments.activity_client_profile.ClientProfileActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"

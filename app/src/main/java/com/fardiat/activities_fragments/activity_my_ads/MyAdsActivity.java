@@ -70,6 +70,7 @@ public class MyAdsActivity extends AppCompatActivity implements Listeners.BackLi
         binding.recView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MyAdsAdapter(productModelList,this);
         binding.recView.setAdapter(adapter);
+        binding.llBack.setOnClickListener(v -> finish());
         getMyAds();
 
     }

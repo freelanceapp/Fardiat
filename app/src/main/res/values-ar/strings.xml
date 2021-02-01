@@ -46,7 +46,7 @@
     <string name="password">كلمة المرور</string>
     <string name="log_in">تسجيل دخول</string>
     <string name="new_account">حساب جديد</string>
-    <string name="skip">الدخول كذائر</string>
+    <string name="skip">الدخول كضيف</string>
     <string name="code">الكود</string>
     <string name="already_have_an_account">لدي حساب بالفعل !</string>
     <string name="field_required">الحقل مطلوب</string>
@@ -232,16 +232,22 @@
     <string name="upload_video">تحميل فيديو</string>
     <string name="ad_price">سعر الإعلان</string>
     <string name="ad_details">تفاصيل الإعلان</string>
-    <string name="max_ad_photo">حد اقصى 2 صورة</string>
+    <string name="max_ad_photo">حد اقصى 1 صورة</string>
     <string name="choose_category">إختر القسم</string>
     <string name="vid_pem_denied">الوصول للفيديو غير متاح</string>
     <string name="length_video_shouldnot_exceed">يجب الا تزيد مدة الفيديو عن 59 ثانية</string>
     <string name="ad_name">إسم الاعلان</string>
-    <string name="choose_maximum2_image">اختر حد ادني 2 صورة للإعلان</string>
+    <string name="choose_maximum2_image">اختر حد اقصى 1 صورة للإعلان</string>
     <string name="copied">تم النسخ</string>
     <string name="rep">تم عمل بلاغ بنجاح</string>
     <string name="type_a_message">إكتب رسالة...</string>
     <string name="chat">محادثة</string>
+    <string name="delete_video">حذف الفيديو</string>
+    <string name="comments">التعليقات:-</string>
+    <string name="no_comments">لاتوجد تعليقات</string>
+    <string name="type_a_comment">إكتب تعليق...</string>
+    <string name="accept_swear">لقد قرأت القسم</string>
+    <string name="accept">الموافقة</string>
 
 
 </resources>

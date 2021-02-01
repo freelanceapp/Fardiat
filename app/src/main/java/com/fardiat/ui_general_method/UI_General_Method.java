@@ -72,17 +72,17 @@ public class UI_General_Method {
             CircleImageView imageView = (CircleImageView) view;
 
             if (endPoint != null) {
-                Picasso.get().load(Uri.parse(Tags.IMAGE_URL + endPoint)).placeholder(R.drawable.image_avatar).into(imageView);
+                Picasso.get().load(Uri.parse(Tags.IMAGE_URL + endPoint)).placeholder(R.drawable.ic_avatar).into(imageView);
             }
         } else if (view instanceof RoundedImageView) {
             RoundedImageView imageView = (RoundedImageView) view;
             if (endPoint != null) {
-                Picasso.get().load(Uri.parse(Tags.IMAGE_URL + endPoint)).fit().placeholder(R.drawable.image_avatar).into(imageView);
+                Picasso.get().load(Uri.parse(Tags.IMAGE_URL + endPoint)).fit().placeholder(R.drawable.ic_avatar).into(imageView);
             }
         } else if (view instanceof ImageView) {
             ImageView imageView = (ImageView) view;
             if (endPoint != null) {
-                Picasso.get().load(Uri.parse(Tags.IMAGE_URL + endPoint)).placeholder(R.drawable.image_avatar).fit().into(imageView);
+                Picasso.get().load(Uri.parse(Tags.IMAGE_URL + endPoint)).placeholder(R.drawable.ic_avatar).fit().into(imageView);
             }
         }
 

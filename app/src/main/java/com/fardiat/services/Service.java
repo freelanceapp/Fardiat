@@ -3,6 +3,7 @@ package com.fardiat.services;
 
 import com.fardiat.models.AddOrderModel;
 import com.fardiat.models.BankDataModel;
+import com.fardiat.models.CommentDatModel;
 import com.fardiat.models.FavoriteDataModel;
 import com.fardiat.models.ItemAddAdsDataModel;
 import com.fardiat.models.MainCategoryDataModel;
@@ -19,6 +20,7 @@ import com.fardiat.models.ProductModel;
 import com.fardiat.models.RoomIdModel;
 import com.fardiat.models.RoomModel;
 import com.fardiat.models.SettingModel;
+import com.fardiat.models.SingleComment;
 import com.fardiat.models.Slider_Model;
 import com.fardiat.models.UserModel;
 
@@ -383,9 +385,24 @@ public interface Service {
     );
 
     @GET("api/get-user-profile-products")
-    Call<ProductDataModel> getProductByUserId(@Query("my_user_id") int my_user_id,
+    Call<ProductDataModel> getProductByUserId(@Query("my_user_id") String my_user_id,
                                               @Query("other_user_id") int product_id
 
     );
+
+    @GET("api/product-comments")
+    Call<CommentDatModel> getComments(@Query("product_id") int product_id
+
+    );
+
+    @FormUrlEncoded
+    @POST("api/add-comment")
+    Call<SingleComment> sendComments(@Header("Authorization") String user_token,
+                                     @Field("product_id") int product_id,
+                                     @Field("user_id") int user_id,
+                                     @Field("comment") String comment
+
+    );
+
 
 }

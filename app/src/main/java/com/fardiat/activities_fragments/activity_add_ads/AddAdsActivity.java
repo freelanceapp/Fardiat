@@ -36,6 +36,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.fardiat.activities_fragments.activite_swear.SwearActivity;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
@@ -209,6 +210,25 @@ public class AddAdsActivity extends AppCompatActivity implements Listeners.BackL
         });
 
 
+        binding.checkbox.setOnClickListener(v -> {
+            if(binding.checkbox.isChecked()){
+                model.setSwear(true);
+                Intent intent = new Intent(this, SwearActivity.class);
+                startActivity(intent);
+            }else {
+                model.setSwear(false);
+            }
+        });
+        binding.flDeleteVideo.setOnClickListener(v -> {
+            binding.flDeleteVideo.setVisibility(View.INVISIBLE);
+            videoUri=null;
+            if (player!=null){
+                player.stop();
+                player.release();
+                player=null;
+                initPlayer(null);
+            }
+        });
         binding.flUploadVideo.setOnClickListener(view -> {
             checkVideoPermission();
         });
@@ -307,7 +327,7 @@ public class AddAdsActivity extends AppCompatActivity implements Listeners.BackL
 
         if (isVideoAvailable){
             binding.flPlayerView.setVisibility(View.GONE);
-            DataSource.Factory factory = new DefaultDataSourceFactory(this, "Ta3leem_live");
+            DataSource.Factory factory = new DefaultDataSourceFactory(this, "add_ads");
 
 
             if (player == null) {
@@ -810,7 +830,7 @@ public class AddAdsActivity extends AppCompatActivity implements Listeners.BackL
         }else if (requestCode == READ_REQ && resultCode == Activity.RESULT_OK && data != null) {
 
             Uri uri = data.getData();
-            if (imagesUriList.size()<2){
+            if (imagesUriList.size()<1){
                 imagesUriList.add(uri.toString());
                 imageAdsAdapter.notifyItemInserted(imagesUriList.size()-1);
             }else {
@@ -821,7 +841,7 @@ public class AddAdsActivity extends AppCompatActivity implements Listeners.BackL
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             Uri uri = getUriFromBitmap(bitmap);
             if (uri != null) {
-                if (imagesUriList.size()<2){
+                if (imagesUriList.size()<1){
                     imagesUriList.add(uri.toString());
                     imageAdsAdapter.notifyItemInserted(imagesUriList.size()-1);
 
@@ -833,6 +853,7 @@ public class AddAdsActivity extends AppCompatActivity implements Listeners.BackL
 
         }else if (requestCode == VIDEO_REQ && resultCode == Activity.RESULT_OK && data != null) {
 
+            binding.flDeleteVideo.setVisibility(View.VISIBLE);
             Uri uri = data.getData();
             new VideoTask().execute(uri);
         }
