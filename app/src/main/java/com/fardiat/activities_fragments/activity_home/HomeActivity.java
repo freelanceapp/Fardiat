@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.fardiat.R;
+import com.fardiat.activities_fragments.activity_add_ads.AddAdsActivity;
 import com.fardiat.activities_fragments.activity_home.fragments.Fragment_Favorite;
 import com.fardiat.activities_fragments.activity_home.fragments.Fragment_Main;
 import com.fardiat.activities_fragments.activity_home.fragments.Fragment_Settings;
@@ -147,12 +148,11 @@ public class HomeActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(view -> {
             if (userModel!=null){
 
-            Intent intent = new Intent(this,com.fardiat.activities_fragments.activity_add_ads.AddAdsActivity.class);
+            Intent intent = new Intent(this, AddAdsActivity.class);
             startActivity(intent);
             }else {
                 Common.CreateDialogAlert(this,getString(R.string.please_sign_in_or_sign_up));
             }
-
 
         });
 
