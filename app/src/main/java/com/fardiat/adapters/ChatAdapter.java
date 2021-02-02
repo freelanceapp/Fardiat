@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fardiat.R;
+import com.fardiat.activities_fragments.activity_chat.ChatActivity;
 import com.fardiat.databinding.ChatImageLeftRowBinding;
 import com.fardiat.databinding.ChatImageRightRowBinding;
 import com.fardiat.databinding.ChatLocationLeftBinding;
@@ -54,6 +55,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private int selected_pos = -1;
     private Handler handler;
     private Runnable runnable;
+    private ChatActivity activity;
 
 
     public ChatAdapter(List<MessageModel> list, Context context, int current_user_id) {
@@ -63,6 +65,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         inflater = LayoutInflater.from(context);
         mediaPlayerList = new SparseArray<>();
         handler = new Handler();
+        activity = (ChatActivity) context;
 
     }
 
@@ -250,6 +253,18 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     playSound(soundLeftHolder.getAdapterPosition());
 
                 }
+            });
+        }else if (holder instanceof LocationLeftHolder) {
+            LocationLeftHolder locationLeftHolder = (LocationLeftHolder) holder;
+            MessageModel messageModel = list.get(holder.getAdapterPosition());
+            locationLeftHolder.itemView.setOnClickListener(v -> {
+                activity.location(messageModel.getMessage());
+            });
+        }else if (holder instanceof LocationRightHolder) {
+            LocationRightHolder locationRightHolder = (LocationRightHolder) holder;
+            MessageModel messageModel = list.get(holder.getAdapterPosition());
+            locationRightHolder.itemView.setOnClickListener(v -> {
+                activity.location(messageModel.getMessage());
             });
         }
 

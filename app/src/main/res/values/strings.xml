@@ -244,5 +244,8 @@
     <string name="type_a_comment">Type a comment...</string>
     <string name="accept_swear">Accept terms and condition</string>
     <string name="accept">Accept</string>
+    <string name="image_uploded">Image uploded</string>
+    <string name="voice_uploaded">Voice uploaded</string>
+    <string name="location_uploded">Location uploaded</string>
 
 </resources>

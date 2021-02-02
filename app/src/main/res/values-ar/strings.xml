@@ -248,6 +248,9 @@
     <string name="type_a_comment">إكتب تعليق...</string>
     <string name="accept_swear">لقد قرأت القسم</string>
     <string name="accept">الموافقة</string>
+    <string name="image_uploded">تم إرفاق صورة</string>
+    <string name="voice_uploaded">تم إرفاق ملف صوتي</string>
+    <string name="location_uploded">تم إرسال عنوان</string>
 
 
 </resources>

@@ -83,6 +83,7 @@ public class Fragment_Settings extends Fragment implements Listeners.SettingActi
         preferences = Preferences.getInstance();
         defaultSettings = preferences.getAppSetting(activity);
         Paper.init(activity);
+        userModel = preferences.getUserData(activity);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
         binding.setActions(this);

@@ -101,6 +101,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
         Intent intent = getIntent();
         if (intent != null) {
             product_id = intent.getIntExtra("product_id", 0);
+            Log.e("id",product_id+"__");
             if (product_id==0){
                 product_id = Integer.parseInt(intent.getData().getLastPathSegment());
             }
@@ -267,6 +268,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
             if (userModel != null) {
                 user_id = String.valueOf(userModel.getUser().getId());
             }
+            Log.e("user_id",userModel.getUser().getId()+"__");
 
             Api.getService(Tags.base_url)
                     .getProductById(user_id, product_id)
@@ -313,10 +315,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
                                     binding.checkFavorite.setChecked(true);
 
                                 }
-/*
                                 if (productModel.getVedio() != null) {
                                     productImageModelList.add(new ProductImageModel(0, productModel.getVedio(), "video"));
-                                }*/
+                                }
                                 if (productModel.getProducts_images() != null && productModel.getProducts_images().size() > 0) {
                                     binding.flNoSlider.setVisibility(View.GONE);
                                     binding.flSlider.setVisibility(View.VISIBLE);

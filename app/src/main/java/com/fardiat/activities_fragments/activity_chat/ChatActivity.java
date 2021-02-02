@@ -128,7 +128,7 @@ public class ChatActivity extends AppCompatActivity {
 
         binding.imageMap.setOnClickListener(v -> {
             Intent intent = new Intent(this, MapSearchActivity.class);
-            startActivityForResult(intent,100);
+            startActivityForResult(intent, 100);
         });
 
 
@@ -170,7 +170,7 @@ public class ChatActivity extends AppCompatActivity {
             String message = binding.edtMessage.getText().toString().trim();
             if (!message.isEmpty()) {
                 binding.edtMessage.setText("");
-                sendChatText("text",message);
+                sendChatText("text", message);
             }
         });
         preferences.create_room_id(this, String.valueOf(chatUserModel.getRoom_id()));
@@ -180,8 +180,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-    public void getAllMessages()
-    {
+    public void getAllMessages() {
 
         Api.getService(Tags.base_url)
                 .getChatMessages(userModel.getUser().getToken(), chatUserModel.getRoom_id())
@@ -242,8 +241,8 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
     }
-    private void sendAttachment(String file_uri, String attachment_type)
-    {
+
+    private void sendAttachment(String file_uri, String attachment_type) {
 
         Intent intent = new Intent(this, ServiceUploadAttachment.class);
         intent.putExtra("file_uri", file_uri);
@@ -256,8 +255,8 @@ public class ChatActivity extends AppCompatActivity {
 
 
     }
-    private void sendChatText(String type,String message)
-    {
+
+    private void sendChatText(String type, String message) {
         long date = Calendar.getInstance().getTimeInMillis();
 
         Api.getService(Tags.base_url)
@@ -312,8 +311,8 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
     }
-    private void checkCameraPermission()
-    {
+
+    private void checkCameraPermission() {
         if (ActivityCompat.checkSelfPermission(this, CAMERA_PERM) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, WRITE_PERM) == PackageManager.PERMISSION_GRANTED) {
             selectImage(CAMERA_REQ);
@@ -325,8 +324,8 @@ public class ChatActivity extends AppCompatActivity {
         }
 
     }
-    private void checkGalleryPermission()
-    {
+
+    private void checkGalleryPermission() {
         if (ActivityCompat.checkSelfPermission(this, READ_PERM) == PackageManager.PERMISSION_GRANTED) {
             selectImage(IMG_REQ);
 
@@ -336,8 +335,8 @@ public class ChatActivity extends AppCompatActivity {
         }
 
     }
-    private void selectImage(int req)
-    {
+
+    private void selectImage(int req) {
 
         Intent intent = new Intent();
         if (req == IMG_REQ) {
@@ -402,10 +401,10 @@ public class ChatActivity extends AppCompatActivity {
             Uri uri = getUriFromBitmap(bitmap);
             sendAttachment(uri.toString(), "file");
 
-        }else if (requestCode == 100 && resultCode == RESULT_OK && data != null){
+        } else if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
             FavoriteLocationModel model = (FavoriteLocationModel) data.getSerializableExtra("data");
-            String location =model.getLat()+","+model.getLng();
-            sendChatText("location",location);
+            String location = model.getLat() + "," + model.getLng();
+            sendChatText("location", location);
         }
 
     }
@@ -429,8 +428,7 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    private void createMediaRecorder()
-    {
+    private void createMediaRecorder() {
 
         String audio_name = "AUD" + System.currentTimeMillis() + ".mp3";
 
@@ -467,8 +465,8 @@ public class ChatActivity extends AppCompatActivity {
 
 
     }
-    private void checkMicPermission()
-    {
+
+    private void checkMicPermission() {
         if (ActivityCompat.checkSelfPermission(this, MIC_PERM) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, WRITE_PERM) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{MIC_PERM, WRITE_PERM}, MIC_REQ);
@@ -476,8 +474,8 @@ public class ChatActivity extends AppCompatActivity {
         }
 
     }
-    private boolean isMicReady()
-    {
+
+    private boolean isMicReady() {
 
         if (ActivityCompat.checkSelfPermission(this, MIC_PERM) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, WRITE_PERM) == PackageManager.PERMISSION_GRANTED) {
@@ -487,8 +485,8 @@ public class ChatActivity extends AppCompatActivity {
         return false;
 
     }
-    private void startTimer()
-    {
+
+    private void startTimer() {
         binding.recordTime.setVisibility(View.VISIBLE);
         binding.edtMessage.setVisibility(View.INVISIBLE);
         handler = new Handler();
@@ -500,8 +498,8 @@ public class ChatActivity extends AppCompatActivity {
 
         handler.postDelayed(runnable, 1000);
     }
-    private void stopTimer()
-    {
+
+    private void stopTimer() {
         binding.recordTime.setVisibility(View.GONE);
         binding.edtMessage.setVisibility(View.VISIBLE);
         if (recorder != null) {
@@ -517,8 +515,8 @@ public class ChatActivity extends AppCompatActivity {
         binding.recordTime.setText("00:00:00");
         binding.recordTime.setVisibility(View.GONE);
     }
-    private String getRecordTimeFormat(long seconds)
-    {
+
+    private String getRecordTimeFormat(long seconds) {
         int hours = (int) (seconds / 3600);
         int minutes = (int) ((seconds % 3600) / 60);
         int second = (int) (seconds % 60);
@@ -526,9 +524,21 @@ public class ChatActivity extends AppCompatActivity {
         return String.format(Locale.ENGLISH, "%02d:%02d:%02d", hours, minutes, second);
 
     }
+
     @Override
     public void onBackPressed() {
         back();
+    }
+
+
+    public void location(String location) {
+        String[] loc = location.split(",");
+
+        double latitude = Double.parseDouble(loc[0]);
+        double longitude = Double.parseDouble(loc[1]);
+        String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?q=loc:%f,%f", latitude,longitude);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        startActivity(intent);
     }
 
     public void back() {

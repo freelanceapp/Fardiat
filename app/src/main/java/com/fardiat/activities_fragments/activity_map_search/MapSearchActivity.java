@@ -106,6 +106,7 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
         lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
 
+        binding.imageBack.setOnClickListener(v -> finish());
 
         binding.btnConfirm.setOnClickListener(v -> {
             if (canSelectLocation) {

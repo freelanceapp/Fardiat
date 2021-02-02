@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity implements Listeners.LoginL
     private CountriesAdapter countriesAdapter;
     private AlertDialog dialog;
     private String lang;
-    private String phone_code = "+966";
+    private String phone_code = "+20";
     private CartSingleton singleton;
     private int back = 0;
 

@@ -448,6 +448,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void updateTokenFireBase() {
 
+        Log.e("id",userModel.getUser().getId()+"__");
         FirebaseInstanceId.getInstance()
                 .getInstanceId().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -517,7 +518,6 @@ public class HomeActivity extends AppCompatActivity {
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                     dialog.dismiss();
                                     if (response.isSuccessful()) {
-                                        Log.e("dd", "ddd");
                                         preferences.clear(HomeActivity.this);
                                         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                         if (manager != null) {

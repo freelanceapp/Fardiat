@@ -15,7 +15,7 @@ public class Tags {
     public static final String session_login = "login";
     public static final String session_logout = "logout";
     public static final int not_id = 1211;
-    public static final String not_tag = "elebel_APP";
+    public static final String not_tag = "fardiat_APP";
 
 
 
