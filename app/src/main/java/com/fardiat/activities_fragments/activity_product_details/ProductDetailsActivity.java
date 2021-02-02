@@ -101,8 +101,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
         Intent intent = getIntent();
         if (intent != null) {
             product_id = intent.getIntExtra("product_id", 0);
-            Log.e("id",product_id+"__");
-            if (product_id==0){
+            Log.e("id", product_id + "__");
+            if (product_id == 0) {
                 product_id = Integer.parseInt(intent.getData().getLastPathSegment());
             }
         }
@@ -157,6 +157,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
             startActivity(intent);
         });
 
+        binding.tvName.setOnClickListener(view -> {
+            Intent intent = new Intent(this, ProfileProductsActivity.class);
+            intent.putExtra("data", productModel.getUser());
+            startActivity(intent);
+        });
+
         binding.iconWhatsApp.setOnClickListener(view -> {
             String phone = productModel.getUser().getPhone_code() + productModel.getUser().getPhone();
             String url = "https://api.whatsapp.com/send?phone=" + phone;
@@ -170,7 +176,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             String data = getString(R.string.app_name) + "\n" + productModel.getTitle() + "\n" + Tags.base_url + "api/product_share/" + productModel.getId();
-            intent.putExtra(Intent.EXTRA_TEXT,data);
+            intent.putExtra(Intent.EXTRA_TEXT, data);
             startActivity(intent);
         });
 
@@ -268,7 +274,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Listene
             if (userModel != null) {
                 user_id = String.valueOf(userModel.getUser().getId());
             }
-            Log.e("user_id",userModel.getUser().getId()+"__");
+            Log.e("user_id", userModel.getUser().getId() + "__");
 
             Api.getService(Tags.base_url)
                     .getProductById(user_id, product_id)
