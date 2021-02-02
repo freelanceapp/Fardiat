@@ -135,7 +135,10 @@
                                 android:layout_marginTop="8dp"
                                 android:layout_marginBottom="8dp"
                                 android:gravity="center"
-                                android:text="اقسم بالله \n انا المعلن ان ادفع عمولة الموقع 1 ٪؜ من قيمة السلعة \n اذا تم البيع عن طريق الموقع او بسببه\n خلال ١٠ ايام من بيع السلعة \n اقسم بالله"
+                                android:text="أتعهد وأقسم بالله \n
+انا المعلن ان ادفع عمولة الموقع 1% منقيمة البيع عن طريق الموقع او بسببه \n \n
+كما اتعهد بدفع العمولة خلال 10 ايام من استلام مبلغ المبايعه
+"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
 
@@ -154,7 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                android:text="@string/accept"
+                android:text="اقسم بالله"
                 android:textColor="@color/white"
                 android:textSize="16sp"
 

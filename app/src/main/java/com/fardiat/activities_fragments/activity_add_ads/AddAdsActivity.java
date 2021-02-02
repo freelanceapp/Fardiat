@@ -148,9 +148,6 @@ public class AddAdsActivity extends AppCompatActivity implements Listeners.BackL
         initView();
     }
 
-
-
-
     private void initView() {
         model = new AddAdsModel();
         viewList = new ArrayList<>();
